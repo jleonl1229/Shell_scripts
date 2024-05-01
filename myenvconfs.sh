@@ -12,12 +12,12 @@ call plug#end()
 EOF
 xdotool type --delay 100 'vim'
 xdotool key Return
-sleep 2
-xdotool key colon
+xdotool key shift+semicolon
 xdotool type 'PlugInstall'
 xdotool key Return
 sleep 10
-xdotool key Escape
+xdotool type ':x!'
+xdotool key Return
 xdotool type ':x!'
 xdotool key Return
 sudo apt-get install hydra -y
