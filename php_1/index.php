@@ -76,22 +76,6 @@ echo "The result is: " . $n3;
 	else
 		echo "Error ". $stmt->error;
 	$stmt->close();
-
-	if (!empty($_SERVER['HTTP_CLIENT_IP']))
-		$ip = $_SERVER['HTTP_CLIENT_IP'];	
-	elseif ($_SERVER['HTTP_X_FORWARDED_FOR'])
-		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];				
-	else
-		$ip = $_SERVER['REMOTE_ADDR'];				
-
-	$shed = $conn->prepare("INSERT INTO tabla (ip_address) VALUES (?)");
-	$shed->bind_param("s", $ip);
-
-	if ($shed->execute())
-		echo "New ip inserted in the database";
-	else
-		echo "Error ". $shed->error;
-	$shed->close();
 ?>
 <h1>Let's list all the users introduced on the table of my database</h1>
 <?php
@@ -103,7 +87,34 @@ echo "The result is: " . $n3;
 		while ($row = $result->fetch_assoc())
 			$usuarios[] = $row;
 		foreach ($usuarios as $usuario)
-			echo "ID: " . $usuario['id'] . " - Nombre: " . $usuario['nombre'] . " - IP: " . $usuario['ip_address'] . "<br>";
+			echo "ID: " . $usuario['id'] . " - Nombre: " . $usuario['nombre'] . "<br>";
+	}
+	else
+		echo "No results found";
+	$conn->close();
+?>
+
+<form action="index.php" method="post">
+	<input type="text" name="query"></input>
+	<button type="submit">SQLme</button>
+</form>
+
+<?php
+	if ($_SERVER['REQUEST_METHOD'] == "POST")
+		$query = $_POST['query'];
+
+	$conn2 = new mysqli($servername, $username, $password, $dbname);
+	if ($conn->connect_error)
+		die("Could not connect: " . $conn2->connect_error);
+	/* echo "Successfully connected to the database " . $dbaname; */
+	$result = $conn2->query($query);
+	if ($result->num_rows > 0)
+	{
+		$usuarios = array();
+		while ($row = $result->fetch_assoc())
+			$usuarios[] = $row;
+		foreach ($usuarios as $usuario)
+			echo $usuario->name . $usuario['id'] . " " .  $uuario->name . $usuario['nombre'] . "<br>";
 	}
 	else
 		echo "No results found";
