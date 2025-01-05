@@ -1,0 +1,8 @@
+El bleach de bash:
+
+real	2m4,765s
+user	1m32,841s
+sys	0m31,851s
+
+El bleach de c:
+
